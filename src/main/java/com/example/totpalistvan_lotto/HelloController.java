@@ -10,23 +10,23 @@ import java.util.*;
 public class HelloController {
 
         @FXML
-        private Label numList;
+        private Label szamLista;
         @FXML
-        private Label numGen;
+        private Label randSzam;
         @FXML
         private Button btnSorsol;
-        private Timer timer;
+        private Timer t;
         private List<Integer> szamok = new ArrayList<>();
-        private int cycle = 0;
-        private boolean sortMode = false;
+        private int ciklus = 0;
+        private boolean rendezE = false;
 
 
         @FXML
         public void sorsolBtnClick() {
-            if (!sortMode) {
-                numList.setText("");
-                timer = new Timer();
-                timer.schedule(new TimerTask() {
+            if (!rendezE) {
+                szamLista.setText("");
+                t = new Timer();
+                t.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         Platform.runLater(() -> { sorsol(); });
@@ -34,45 +34,45 @@ public class HelloController {
                 }, 0, 150);
             } else {
                 Collections.sort(szamok);
-                numList.setText("");
-                for (int num : szamok) {
-                   hozzaad(num);
+                szamLista.setText("");
+                for (int szam : szamok) {
+                   hozzaad(szam);
                 }
                 reset();
             }
         }
 
         private void sorsol() {
-            if (cycle < 50) {
-                int num = (int) (Math.random() * 90 + 1);
-                numGen.setText(num + "");
-                cycle++;
-                if (cycle % 10 == 0) {
-                    while (szamok.contains(num)) {
-                        num = (int) (Math.random() * 90 + 1);
-                        numGen.setText(num + "");
+            if (ciklus < 50) {
+                int szam = (int) (Math.random() * 90 + 1);
+                randSzam.setText(szam + "");
+                ciklus++;
+                if (ciklus % 10 == 0) {
+                    while (szamok.contains(szam)) {
+                        szam = (int) (Math.random() * 90 + 1);
+                        randSzam.setText(szam + "");
                     }
-                    szamok.add(num);
-                    hozzaad(num);
+                    szamok.add(szam);
+                    hozzaad(szam);
                 }
             } else {
-                timer.cancel();
+                t.cancel();
                 btnSorsol.setText("Rendez");
-                sortMode = true;
+                rendezE = true;
             }
         }
 
         private void reset() {
-            sortMode = false;
+            rendezE = false;
             btnSorsol.setText("Sorsol");
-            cycle = 0;
+            ciklus = 0;
             szamok.clear();
         }
 
-        private void hozzaad(int num) {
-            String text = numList.getText();
-            if (text.length() == 0) text += num + "";
-            else text += ", " + num;
-            numList.setText(text);
+        private void hozzaad(int szam) {
+            String text = szamLista.getText();
+            if (text.length() == 0) text += szam + "";
+            else text += ", " + szam;
+            szamLista.setText(text);
         }
 }
